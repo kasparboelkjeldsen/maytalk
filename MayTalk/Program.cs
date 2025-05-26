@@ -25,8 +25,7 @@ app.UseUmbraco()
         u.UseWebsiteEndpoints();
     });
 
-
-//app.PatchContentTypeRepositoryBase();
 //app.PatchUmbracoServices();
+//app.PatchContentTypeRepositoryBase();
 //app.TranspileBananaVersion();
 await app.RunAsync();
