@@ -40,6 +40,33 @@ public static class TranspilerIsBananasExtension
         IEnumerable<CodeInstruction> instructions,
         ILGenerator il)
     {
+
+/*          
+[ApiVersion("1.0")]
+public class InformationServerController : ServerControllerBase
+{
+    private readonly IServerInformationService _serverInformationService;
+    private readonly IUmbracoMapper _umbracoMapper;
+
+    public InformationServerController(IServerInformationService serverInformationService, IUmbracoMapper umbracoMapper)
+    {
+        _serverInformationService = serverInformationService;
+        _umbracoMapper = umbracoMapper;
+    }
+
+    [HttpGet("information")]
+    [MapToApiVersion("1.0")]
+    [ProducesResponseType(typeof(ServerInformationResponseModel), StatusCodes.Status200OK)]
+    public Task<IActionResult> Information(CancellationToken cancellationToken)
+    {
+        ServerInformationResponseModel responseModel = _umbracoMapper.Map<ServerInformationResponseModel>(_serverInformationService.GetServerInformation())!;
+        responseModel.AssemblyVersion = "banana"; <--- THIS IS WHAT WE ARE TRyING TO DO
+        responseModel.Version = "banana";
+        return Task.FromResult<IActionResult>(Ok(responseModel));
+    }
+}
+*/
+
         var codes = new List<CodeInstruction>(instructions);
 
         var setVersion = typeof(ServerInformationResponseModel)
