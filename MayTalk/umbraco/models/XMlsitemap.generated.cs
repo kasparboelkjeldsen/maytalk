@@ -20,7 +20,7 @@ namespace Umbraco.Cms.Web.Common.PublishedModels
 {
 	/// <summary>XML Sitemap</summary>
 	[PublishedModel("xMLSitemap")]
-	public partial class XMlsitemap : PublishedContentModel, INoModelGeneration, IVisibilityControls
+	public partial class XMlsitemap : PublishedContentModel, IVisibilityControls
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant

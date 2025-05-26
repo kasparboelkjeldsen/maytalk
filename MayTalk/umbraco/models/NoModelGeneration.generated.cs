@@ -18,15 +18,9 @@ using Umbraco.Extensions;
 
 namespace Umbraco.Cms.Web.Common.PublishedModels
 {
-	// Mixin Content Type with alias "noModelGeneration"
-	/// <summary>No Model Generation</summary>
-	public partial interface INoModelGeneration : IPublishedContent
-	{
-	}
-
 	/// <summary>No Model Generation</summary>
 	[PublishedModel("noModelGeneration")]
-	public partial class NoModelGeneration : PublishedContentModel, INoModelGeneration
+	public partial class NoModelGeneration : PublishedContentModel
 	{
 		// helpers
 #pragma warning disable 0109 // new is redundant

@@ -59,54 +59,17 @@ namespace MayTalk.Patches
             }
             */
 
+            // we are running right after this code with a postfix
 
-            var contentTypeService = GetPrivateField(__instance, "_contentTypeService") as IContentTypeService;
-            var mediaTypeService = GetPrivateField(__instance, "_mediaTypeService") as IContentTypeService;
-            var memberTypeService = GetPrivateField(__instance, "_memberTypeService") as IContentTypeService;
-
-            var getTypesMethod = typeof(UmbracoServices).GetMethod("GetTypes", BindingFlags.Instance | BindingFlags.NonPublic);
+            // strip everything not an element or content type
             
-            var ensureDistinctAliasesMethod = typeof(UmbracoServices).GetMethod(
-                "EnsureDistinctAliases",
-                BindingFlags.NonPublic | BindingFlags.Static
-            );
+            __result = __result.Where(
+                x => 
+                    (x.ItemType == TypeModel.ItemTypes.Element || x.ItemType == TypeModel.ItemTypes.Content) // only keep content and element types
+                    &&
+                    (!x.MixinTypes.Any(y => y.Alias == "noModelGeneration")) // exclude types with the "No Model Generation" composition
+                ).ToList();
 
-            var contentTypes = contentTypeService?.GetAll().Cast<IContentTypeComposition>().ToList();
-            var mediaTypes = mediaTypeService?.GetAll().Cast<IContentTypeComposition>().ToList();
-            var memberTypes = memberTypeService?.GetAll().Cast<IContentTypeComposition>().ToList();
-
-            var types = new List<TypeModel>();
-
-            if (getTypesMethod != null)
-            {
-                
-                if (contentTypes != null)
-                {
-                    //var filteredContentTypes = contentTypes.ToArray();
-                    
-                    // lets remove every content type that has the composition "No Model Generation"
-
-                    var filteredContentTypes = contentTypes.Where(x => !x.CompositionAliases().Contains("noModelGeneration")).ToArray();
-
-                    var content = (IEnumerable<TypeModel>)getTypesMethod.Invoke(__instance, new object[] { PublishedItemType.Content, filteredContentTypes });
-
-                    //content = content.Where(x => x.)
-
-                    types.AddRange(content);
-                }
-                // how about we just don't add media or member types at all?
-                
-            }
-
-            if (ensureDistinctAliasesMethod != null)
-            {
-                __result = (IList<TypeModel>)ensureDistinctAliasesMethod.Invoke(null, new object[] { types });
-            }
-        }
-
-        private static object? GetPrivateField(object obj, string name)
-        {
-            return obj.GetType().GetField(name, BindingFlags.Instance | BindingFlags.NonPublic)?.GetValue(obj);
         }
     }
 }
